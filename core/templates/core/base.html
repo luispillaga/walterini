@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>{% block title %}{% endblock %} | Walterini</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<meta name="author" content="" />
+
+  <!-- Facebook and Twitter integration -->
+	<meta property="og:title" content=""/>
+	<meta property="og:image" content=""/>
+	<meta property="og:url" content=""/>
+	<meta property="og:site_name" content=""/>
+	<meta property="og:description" content=""/>
+	<meta name="twitter:title" content="" />
+	<meta name="twitter:image" content="" />
+	<meta name="twitter:url" content="" />
+	<meta name="twitter:card" content="" />
+
+    {% load static %}
+
+
+	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+	<link rel="shortcut icon" href="favicon.ico">
+
+	<link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700" rel="stylesheet">
+	
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="{% static 'core/css/animate.css' %}">
+	<link rel="stylesheet" href="{% static 'core/css/magnific-popup.css' %}">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="{% static 'core/css/icomoon.css' %}">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="{% static 'core/css/bootstrap.css' %}">
+	<!-- Flexslider  -->
+	<link rel="stylesheet" href="{% static 'core/css/flexslider.css' %}">
+	<!-- Flaticons  -->
+	<link rel="stylesheet" href="{% static 'core/fonts/flaticon/font/flaticon.css' %}">
+	<!-- Owl Carousel -->
+	<link rel="stylesheet" href="{% static 'core/css/owl.carousel.min.css' %}">
+	<link rel="stylesheet" href="{% static 'core/css/owl.theme.default.min.css' %}">
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="{% static 'core/css/style.css' %}">
+
+	<!-- Modernizr JS -->
+	<script src="{% static 'core/js/modernizr-2.6.2.min.js' %}"></script>
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="{% static 'core/js/respond.min.js' %}"></script>
+	<![endif]-->
+
+	</head>
+	<body>
+    <div id="colorlib-page">
+		<div class="container-wrap">
+		<a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><i></i></a>
+		<aside id="colorlib-aside" role="complementary" class="border js-fullheight">
+			<div class="text-center">
+                {% load profiles_extras %}
+                {% get_profile as profile %}
+                {% if profile %}
+                    <div class="author-img" style="background-image: url({{profile.image.url}});"></div>
+                    <h1 id="colorlib-logo"><a href="{% url 'biography' %}">{{ profile.name }} {{ profile.last_name }}</a></h1>
+                    <span class="position"><a href="#">{{ profile.profession }}</a> en {{ profile.city }}</span>
+                {% else %}
+                    <div class="author-img" style="background-image: url({% static 'core/images/about.jpg' %});"></div>
+                    <h1 id="colorlib-logo"><a href="{% url 'biography' %}">Nombre Apellido</a></h1>
+                    <span class="position"><a href="#">Profesión</a> en Ciudad</span>
+                {% endif %}
+			</div>
+			<nav id="colorlib-main-menu" role="navigation" class="navbar">
+				<div class="collapse">
+					<ul>
+						<li class="{% if request.path == '/' %}active{% endif %}"><a href="{% url 'home' %}">Inicio</a></li>
+						<li class="{% if request.path == '/core/' %}active{% endif %}"><a href="{% url 'biography' %}">Biografía</a></li>
+{#						<li><a href="#" data-nav-section="skills">Skills</a></li>#}
+						<li class="{% if request.path|slice:":23" == '/portfolio/photography/' %}active{% endif %}"><a href="{% url 'projects:photography_list' %}">Fotografía</a></li>
+						<li class="{% if request.path|slice:":16" == '/portfolio/poem/' %}active{% endif %}"><a href="{% url 'projects:poem_list' %}">Poesía</a></li>
+						<li class="{% if request.path|slice:":19" == '/portfolio/drawing/' %}active{% endif %}"><a href="{% url 'projects:drawing_list' %}">Dibujo</a></li>
+						<li class="{% if request.path|slice:":6" == '/blog/' %}active{% endif %}"><a href="{% url 'posts:post_list' %}">Blog</a></li>
+						<li class="{% if request.path == '/contact/' %}active{% endif %}"><a href="{% url 'contact' %}">Contacto</a></li>
+					</ul>
+				</div>
+			</nav>
+
+			<div class="colorlib-footer">
+				<p><small>&copy; <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --> </span> <span>Demo Images: <a href="https://unsplash.com/" target="_blank">Unsplash.com</a></span><span>Developed by: <a href="https://www.facebook.com/luis.pillaga" target="_blank">Luis Pillaga</a></span></small></p>
+				<ul>
+                    {% if LINK_FACEBOOK %}
+                        <li><a href="{{ LINK_FACEBOOK }}"><i class="icon-facebook2" style="color:#999999;"></i></a></li>
+                    {% endif %}
+                    {% if LINK_TWITTER %}
+                        <li><a href="{{ LINK_TWITTER }}"><i class="icon-twitter2" style="color:#999999;"></i></a></li>
+                    {% endif %}
+                    {% if LINK_INSTAGRAM %}
+                        <li><a href="{{ LINK_INSTAGRAM }}"><i class="icon-instagram" style="color:#999999;"></i></a></li>
+                    {% endif %}
+                    {% if LINK_LINKEDIN %}
+                        <li><a href="{{ LINK_LINKEDIN }}"><i class="icon-linkedin2" style="color:#999999;"></i></a></li>
+                    {% endif %}
+				</ul>
+			</div>
+
+		</aside>
+            <div id="fb-root"></div>
+            <script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v3.2&appId=424505951642710&autoLogAppEvents=1"></script>
+		<div id="colorlib-main">
+            {% block content %}
+            {% endblock%}
+		</div><!-- end:colorlib-main -->
+	</div><!-- end:container-wrap -->
+	</div><!-- end:colorlib-page -->
+
+	<!-- jQuery -->
+	<script src="{% static 'core/js/jquery.min.js' %}"></script>
+	<!-- jQuery Easing -->
+	<script src="{% static 'core/js/jquery.easing.1.3.js' %}"></script>
+	<!-- Bootstrap -->
+	<script src="{% static 'core/js/bootstrap.min.js' %}"></script>
+	<!-- Waypoints -->
+	<script src="{% static 'core/js/jquery.waypoints.min.js' %}"></script>
+	<!-- Flexslider -->
+	<script src="{% static 'core/js/jquery.flexslider-min.js' %}"></script>
+	<!-- Owl carousel -->
+	<script src="{% static 'core/js/owl.carousel.min.js' %}"></script>
+	<!-- Counters -->
+	<script src="{% static 'core/js/jquery.countTo.js' %}"></script>
+	<script src="{% static 'core/js/jquery.magnific-popup.min.js' %}"></script>
+	<script src="{% static 'core/js/main-gallery.js' %}"></script>
+
+	
+	<!-- MAIN JS -->
+	<script src="{% static 'core/js/main.js' %}"></script>
+
+	</body>
+</html>
+

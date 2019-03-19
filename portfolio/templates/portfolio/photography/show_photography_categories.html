@@ -1,0 +1,26 @@
+{% if categories %}
+    <div class="row row-bottom-padded-sm animate-box fadeInLeft animated" data-animate-effect="fadeInLeft">
+        <div class="col-md-12">
+            <p class="work-menu">
+                {% for category in categories %}
+                    {% if forloop.first %}
+                        <span>
+                            <a href="{% url 'projects:photography_list' %}" class="{% if path == "/portfolio/photography/" %}bold{% endif %}">
+                                Todo ({{ photographs.count }})
+                            </a>
+                        </span>
+                    {% endif %}
+                    {% with category.id|stringformat:"i" as id %}
+                        {% with "/portfolio/photography/category/"|add:id|add:"/" as current_path %}
+                            <span>
+                                <a href="{% url 'projects:photos_by_category' category.id %}" class="{% if path == current_path %}bold{% endif %}">
+                                    {{ category.name }} {% for photography in category.get_photographs.all %}{% if forloop.last %}({{ forloop.counter }}){% endif %}{% endfor %}
+                                </a>
+                            </span>
+                        {% endwith %}
+                    {% endwith %}
+                {% endfor %}
+            </p>
+        </div>
+    </div>
+{% endif %}

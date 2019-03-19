@@ -1,0 +1,92 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load blog_tags %}
+
+{% block title %}Blog{% endblock %}
+{% block content %}
+    <section class="colorlib-blog" style="padding-bottom: 0px;">
+        <div class="colorlib-narrow-content">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 col-md-pull-3">
+                    <span class="heading-meta">
+                        <a style="color: #999999;" href="{% url 'posts:post_list' %}">Publicaciones</a> » <span style="color: #000;">"{{ value }}"</span>
+                    </span>
+                    <h2 class="colorlib-heading animate-box fadeInLeft animated" data-animate-effect="fadeInLeft">Blog</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 col-md-8">
+                    <div class="row">
+                        {% if results %}
+                            {% with results.count as total_results %}
+                                <p><h3 class="text-center">{{ total_results }} resultado{{ total_results|pluralize }} de búsqueda para <b>"{{ value }}"</b></h3></p>
+                            {% endwith %}
+                            <br>
+                            {% for post in results %}
+                                <div class="col-lg-6 col-md-12 col-sm-12 animate-box fadeInLeft animated" data-animate-effect="fadeInLeft">
+                                    <div class="blog-entry">
+                                        <a href="{% url 'posts:post_detail' post.id post.title|slugify %}" class="blog-img"><img src="{{ post.image.url }}" class="img-responsive" alt="Post 1"></a>
+                                        <div class="desc">
+                                            <span>
+                                                <small>
+                                                    {{ post.publish|date:"M d, Y" }}
+                                                </small> |
+                                                <small>
+                                                    {% for category in post.categories.all %}
+                                                        {{ category.name }}
+                                                        {% if not forloop.last %},
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </small>
+                                            </span>
+                                            <h3><a href="{% url 'posts:post_detail' post.id post.title|slugify %}">{{ post.title }}</a></h3>
+                                            <p>{{ post.content|truncatewords:20|safe }}</p>
+                                            <a href="{% url 'posts:post_detail' post.id post.title|slugify %}" class="lead">Read More <i class="icon-arrow-right3"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="blog-entry">
+                                    <h4>No se encontraron resultados de búsqueda para <b>"{{ value }}"</b></h4>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <!-- Paginación « -->
+                    {% if is_paginated %}
+                        <div class="row">
+                            <div class="col-md-12 animate-box fadeInLeft animated" data-animate-effect="fadeInLeft">
+                                <ul class="pagination">
+                                    {% if page_obj.has_previous %}
+                                        <li class="disabled"><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                                    {% else %}
+                                        <li class="disabled"><a href="#" tabindex="-1">&laquo;</a></li>
+                                    {% endif %}
+                                    {% for i in paginator.page_range %}
+                                        <li class="{% if page_obj.number == i %}active{% endif %}"><a href="?page={{ i }}">{{ i }}</a></li>
+                                    {% endfor %}
+                                    {% if page_obj.has_next %}
+                                        <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                                    {% else %}
+                                        <li class="disabled"><a tabindex="-1" href="#">&raquo;</a></li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-lg-4 col-md-4 sidebar ftco-animate bg-light fadeInUp ftco-animated pdb">
+                    <!-- Search Form -->
+                    {% include 'blog/searh_form.html' %}
+
+                    <!-- Categories -->
+                    {% show_categories 10 request.path%}
+                </div>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}
+

@@ -1,0 +1,90 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load portfolio_tags %}
+
+{% block title %}Poesía{% endblock %}
+{% block content %}
+    <section class="colorlib-blog" style="padding-bottom: 40px;">
+        <div class="colorlib-narrow-content">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 col-md-pull-3">
+                    <span class="heading-meta">
+                        <a style="color: #999999;" href="#">Portafolio</a> » <a style="color: #999999;" href="{% url 'projects:poem_list' %}">Poesía</a> » <span style="color: #000;">{{ category.name }}</span>
+                    </span>
+                    <h2 class="colorlib-heading animate-box fadeInLeft animated" data-animate-effect="fadeInLeft">Poesía</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 col-md-8">
+                    <div class="row">
+                        {% for poem in category.get_poems.all %}
+                            <div class="col-lg-12 col-md-12 col-sm-12 animate-box fadeInLeft animated" data-animate-effect="fadeInLeft">
+                                <div class="blog-entry2">
+                                    <div class="desc2">
+                                        <h3><a href="{% url 'projects:poem_detail' poem.id poem.title|slugify %}">{{ poem.title }}</a></h3>
+                                        <p>{{ poem.content|safe|truncatewords:50 }}</p>
+                                        <a href="{% url 'projects:poem_detail' poem.id poem.title|slugify %}" class="lead">Leer más <i class="icon-arrow-right3"></i></a>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                        {% empty %}
+                            <div class="col-lg-6 col-md-12 col-sm-12 animate-box fadeInLeft animated" data-animate-effect="fadeInLeft">
+                                <div class="blog-entry">
+                                    <div class="desc">
+                                        <h3><b><a href="#">Cree su primer poema</a></b></h3>
+                                        <p>Este es un una publicación de ejemplo puede crear uno en el panel de Administración.
+                                            Won't you celebrate with me
+                                            what i have shaped into
+                                            a kind of life? i had no model.
+                                            born in babylon
+                                            both nonwhite and woman
+                                            what did i see to be except myself?
+                                            i made it up
+                                            here on this bridge between
+                                            starshine and clay. </p>
+                                        <a href="{% url 'admin:index' %}" class="lead">Crea publicación <i class="icon-arrow-right3"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <!-- Paginación « -->
+                    {% if is_paginated %}
+                        <div class="row">
+                            <div class="col-md-12 animate-box fadeInLeft animated" data-animate-effect="fadeInLeft">
+                                <ul class="pagination">
+                                    {% if page_obj.has_previous %}
+                                        <li class="disabled"><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                                    {% else %}
+                                        <li class="disabled"><a href="#" tabindex="-1">&laquo;</a></li>
+                                    {% endif %}
+                                    {% for i in paginator.page_range %}
+                                        <li class="{% if page_obj.number == i %}active{% endif %}"><a href="?page={{ i }}">{{ i }}</a></li>
+                                    {% endfor %}
+                                    {% if page_obj.has_next %}
+                                        <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                                    {% else %}
+                                        <li class="disabled"><a tabindex="-1" href="#">&raquo;</a></li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-lg-4 col-md-4 sidebar ftco-animate bg-light fadeInUp ftco-animated pdb">
+                    <!-- Search Form -->
+                    {% include 'portfolio/poem/searh_form.html' %}
+
+                    <!-- Categories -->
+                    {% show_poem_categories 10 request.path %}
+
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+{% endblock %}
+

@@ -1,0 +1,65 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load blog_tags %}
+
+{% block title %}Publicación{% endblock %}
+{% block content %}
+    <section class="colorlib-blog">
+        <div class="colorlib-narrow-content">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 col-md-pull-3">
+                    <span class="heading-meta">
+                        <a style="color: #999999;" href="{{ request.META.HTTP_REFERER }}">Publicaciones</a> » <span style="color: #000;">{{ post.title }}</span>
+                    </span>
+{#                    <h2 class="colorlib-heading animate-box fadeInLeft animated" data-animate-effect="fadeInLeft">{{ post.title }}</h2>#}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-sm-12 fadeInUp animated">
+                    <p class="fadeInLeft animated">
+                        <img src="{{ post.image.url }}" alt="" class="img-fluid">
+                        <div class="desc">
+                        {% if profile %}
+                            <img class="mini-author" src="{{ profile.image.url }}"/>
+                        {% else %}
+                            <img src="{{ profile.image.url }}"/>
+                        {% endif %}
+                            <span style="font-size: 12px; color: rgba(0, 0, 0, 0.4) !important; text-transform: uppercase; letter-spacing: 1px; font-weight: 400;">
+                                <small>
+                                    {{ profile.name}} {{ profile.last_name }}
+                                </small> |
+                                <small>
+                                    {{ post.publish|date:"M d, Y" }}
+                                </small> |
+                                <small>
+                                    {% for category in post.categories.all %}
+                                        {{ category.name }}
+                                        {% if not forloop.last %},
+                                        {% endif %}
+                                    {% endfor %}
+                                </small> |
+                                <small>
+                                    <i class="icon-bubble3"></i>
+                                    <span class="fb-comments-count" data-href="http://127.0.0.1:8000/blog/{{ post.id }}/{{ post.title }}"></span>
+                                </small>
+                            </span>
+                        </div>
+                        <h2>{{ post.title }}</h2>
+                    </p>
+                    <p>
+                        {{ post.content|safe }}
+                    </p>
+                      <div class="fb-comments" data-href="http://127.0.0.1:8000/blog/{{ post.id }}/{{ post.title }}" data-width="600px" data-numposts="5"></div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12 sidebar ftco-animate bg-light fadeInUp ftco-animated pdb">
+                    <!-- Search Form -->
+                    {% include 'blog/searh_form.html' %}
+                    <!-- Categories -->
+                    {% show_categories 10 request.path %}
+                </div>
+            </div>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}

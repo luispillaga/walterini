@@ -1,0 +1,51 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block title %}Inicio{% endblock %}
+{% block content %}
+    <section id="colorlib-hero" class="js-fullheight" style="margin-bottom: 0px;">
+        <div class="flexslider js-fullheight">
+            <ul class="slides">
+                {% if sliders%}
+                    {% for slide in sliders %}
+                        <li style="background-image: url({{slide.image.url}});">
+                            <div class="overlay"></div>
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-6 col-md-offset-3 col-md-pull-3 col-sm-12 col-xs-12 js-fullheight slider-text">
+                                        <div class="slider-text-inner js-fullheight">
+                                            <div class="desc">
+                                                <h1 style="color: {{ slide.color }};">{{slide.title}}</h1>
+                                                <h2 style="color: {{ slide.color }};">{{slide.subtitle}}</h2>
+                                                <p style="color: {{ slide.color }};"><a class="btn btn-primary btn-learn" style="color: {{ slide.color }};">Ver mi portafolio<i class="icon-briefcase3"></i></a></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor%}
+                {% else %}
+                    <li style="background-image: url({% static 'core/images/img_bg_2.jpg' %});">
+				   		<div class="overlay"></div>
+				   		<div class="container-fluid">
+				   			<div class="row">
+					   			<div class="col-md-6 col-md-offset-3 col-md-pull-3 col-sm-12 col-xs-12 js-fullheight slider-text">
+					   				<div class="slider-text-inner">
+					   					<div class="desc">
+						   					<h1>Slide <br> de Prueba</h1>
+												<h2>Este es un slide de prueba, puedes crearlos en el Panel de Administración</h2>
+												<p><a href="{% url 'admin:index'%}" class="btn btn-primary btn-learn">Crear Slide</a></p>
+											</div>
+					   				</div>
+					   			</div>
+					   		</div>
+				   		</div>
+				   	</li>
+                {% endif%}
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+

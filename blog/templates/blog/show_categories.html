@@ -1,0 +1,21 @@
+{% if categories %}
+    <div class="sidebar-box ftco-animate fadeInUp ftco-animated">
+        <h3 class="sidebar-heading">Categorias</h3>
+        <ul class="categories">
+            {% for category in categories %}
+                {% with category.id|stringformat:"i" as id %}
+                    {% with "/blog/category/"|add:id|add:"/" as current_path %}
+                        <li><a class="{% if path == current_path %}bold{% endif %}" href="{% url 'posts:posts_by_category' category.id %}">{{ category.name }}
+                            <span>
+                        {% for post in category.get_posts.all%}
+                            {% if forloop.last %}
+                                ({{ forloop.counter }})
+                            {% endif %}
+                        {% endfor %}
+                    </span></a></li>
+                    {% endwith %}
+                {% endwith %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}

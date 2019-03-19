@@ -1,0 +1,72 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load portfolio_tags %}
+
+{% block title %}Dibujo{% endblock %}
+{% block content %}
+
+    <section class="colorlib-work">
+        <div class="colorlib-narrow-content">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 col-md-pull-3 animate-box fadeInLeft animated" data-animate-effect="fadeInLeft">
+                    <span class="heading-meta">
+                        <a style="color: #999999;" href="#">Portafolio</a> » <a style="color: #999999;" href="{% url 'projects:drawing_list'%}">Dibujo</a> » <span style="color: #000;">{{ category.name }}</span>
+                    </span>
+                    <h2 class="portfolio-heading animate-box fadeInUp animated">Galería</h2>
+                </div>
+            </div>
+            {#show categories#}
+            {% show_drawing_categories 10 request.path %}
+
+        </div>
+        <div class="photography">
+            <div class="row no-gutters">
+                {% for drawing in category.get_drawings.all %}
+                    <div class="col-lg-4 col-md-6 col-sm-6 animate-box fadeInLeft animated" data-animate-effect="fadeInLeft">
+                        <a href="{{ drawing.image.url}}" title="{{ drawing.title }}" class="photography-entry img image-popup d-flex justify-content-center align-items-center" style="background-image: url({{ drawing.image.url}});">
+                            <div class="overlay"></div>
+                            <div class="text text-center">
+                                <h3>{{ drawing.title }}</h3>
+                                <span class="tag">{% for category in drawing.categories.all %}{{ category.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</span>
+                            </div>
+                        </a>
+                    </div>
+                {% empty %}
+                    <div class="col-lg-4 col-md-6 col-sm-6 animate-box fadeInRight animated" data-animate-effect="fadeInRight">
+                        <a href="{% static 'core/images/cover_bg_1.jpg' %}" class="photography-entry img image-popup d-flex justify-content-center align-items-center" style="background-image: url({% static 'core/images/cover_bg_1.jpg' %});">
+                            <div class="overlay"></div>
+                            <div class="text text-center">
+                                <h3>Fotografía Ejemplo</h3>
+                                <span class="tag">Categoría</span>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+            <!-- Paginación « -->
+            {% if is_paginated %}
+                <div class="row text-center">
+                    <div class="col-md-12 animate-box fadeInLeft animated" data-animate-effect="fadeInLeft">
+                        <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                                <li class="disabled"><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                            {% else %}
+                                <li class="disabled"><a href="#" tabindex="-1">&laquo;</a></li>
+                            {% endif %}
+                            {% for i in paginator.page_range %}
+                                <li class="{% if page_obj.number == i %}active{% endif %}"><a href="?page={{ i }}">{{ i }}</a></li>
+                            {% endfor %}
+                            {% if page_obj.has_next %}
+                                <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                            {% else %}
+                                <li class="disabled"><a tabindex="-1" href="#">&raquo;</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+    </section>
+
+{% endblock %}
