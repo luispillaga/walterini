@@ -78,3 +78,7 @@ def search_poems(request, value):
             rank=SearchRank(search_vector, search_query)
         ).filter(search=search_query).order_by('-rank')
         return render(request, "portfolio/poem/founded_poems.html", {'results': results, 'value': value})
+
+
+def portfolio_main(request):
+    return render(request, "portfolio/portfolio-main.html")

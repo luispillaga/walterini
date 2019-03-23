@@ -1,9 +1,10 @@
 from django.urls import path
 from .views import PhotographyListView, photos_by_category, DrawingListView, drawings_by_category, PoemListView, \
-        PoemDetailView, poems_by_category, search_poems
+        PoemDetailView, poems_by_category, search_poems, portfolio_main
 
 
 portfolio_patterns = ([
+        path('', portfolio_main, name='portfolio_main'),
         path('photography/', PhotographyListView.as_view(), name='photography_list'),
         path('photography/category/<int:category_id>/', photos_by_category, name="photos_by_category"),
         path('drawing/', DrawingListView.as_view(), name='drawing_list'),

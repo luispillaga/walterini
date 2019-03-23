@@ -6,22 +6,26 @@ from .models import Photography, Category, Poem, Drawing
 @admin.register(Photography)
 class PhotographyAdmin(admin.ModelAdmin):
     list_display = ('title', 'image', 'published', 'created')
-    readonly_fields = ('created', 'updated')
+    search_fields = ('title',)
+    date_hierarchy = 'created'
 
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'created')
-    readonly_fields = ('created', 'updated')
+    search_fields = ('name',)
+    date_hierarchy = 'created'
 
 
 @admin.register(Poem)
 class PoemAdmin(admin.ModelAdmin):
-    list_display = ('title', 'created')
-    readonly_fields = ('created', 'updated')
+    list_display = ('title', 'created', 'published')
+    search_fields = ('title', 'content')
+    date_hierarchy = 'created'
 
 
 @admin.register(Drawing)
 class DrawingAdmin(admin.ModelAdmin):
-    list_display = ('title', 'image', 'created')
-    readonly_fields = ('created', 'updated')
+    list_display = ('title', 'image', 'created', 'published')
+    search_fields = ('title',)
+    date_hierarchy = 'created'

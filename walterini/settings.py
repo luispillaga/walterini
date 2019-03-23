@@ -23,9 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '7y=6n**(pz@)i^#euc5_)yku0rdlhqvfc(2@ime#=4g#qpig%m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'walterini2.appspot.com',  # must add the app engine (project-id) domain here
+    '127.0.0.1',  # for local testing
+]
 
 
 # Application definition
@@ -44,7 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.postgres',
     'core.apps.CoreConfig',
-    'home',
+    'home.apps.HomeConfig',
     'social.apps.SocialConfig',
     'blog.apps.BlogConfig',
     'contact',
@@ -87,19 +90,27 @@ WSGI_APPLICATION = 'walterini.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        # If you are using Cloud SQL for MySQL rather than PostgreSQL, set
+        # 'ENGINE': 'django.db.backends.mysql' instead of the following.
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'blog',
-        'USER': 'postgres',
+        'NAME': 'walterini',
+        'USER': 'walter',
         'PASSWORD': 'postgres',
+        # For MySQL, set 'PORT': '3306' instead of the following. Any Cloud
+        # SQL Proxy instances running locally must also be set to tcp:3306.
+        'PORT': '5432',
     }
 }
-
-
+# In the flexible environment, you connect to CloudSQL using a unix socket.
+# Locally, you can use the CloudSQL proxy to proxy a localhost connection
+# to the instance
+DATABASES['default']['HOST'] = '/cloudsql/walterini2:us-central1:walterini2-db'
+if os.getenv('GAE_INSTANCE'):
+    pass
+else:
+    DATABASES['default']['HOST'] = '127.0.0.1'
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
@@ -136,11 +147,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = 'https://storage.googleapis.com/walterini-static/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Media Config
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = 'https://storage.googleapis.com/walterini-media/media/'
+# MEDIA_URL = '/media/'
+MEDIA_ROOT = 'https://storage.googleapis.com/walterini-media/media'
 
 
 # CkEditor
@@ -225,12 +238,12 @@ CKEDITOR_CONFIGS = {
     }
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'appengine_emailbackend.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'lpillaga@gmail.com'
-EMAIL_HOST_PASSWORD = 'LuIs0395$$Jkenway'
+EMAIL_HOST_USER = 'walterini94@gmail.com'
+EMAIL_HOST_PASSWORD = 'Capricce24'
 
 # Jet Themes
 JET_THEMES = [
@@ -265,12 +278,3 @@ JET_THEMES = [
         'title': 'Light Gray'
     }
 ]
-
-# DJANGO HITCOUNT SPECIFIC VARIABLES
-
-# As of v1.1.1 this setting is no longer needed
-# SESSION_SAVE_EVERY_REQUEST = True
-HITCOUNT_KEEP_HIT_ACTIVE = {'minutes': 60}
-HITCOUNT_HITS_PER_IP_LIMIT = 0  # unlimited
-HITCOUNT_EXCLUDE_USER_GROUP = ()  # not used
-HITCOUNT_KEEP_HIT_IN_DATABASE = {'seconds': 10}

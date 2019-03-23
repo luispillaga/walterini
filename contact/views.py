@@ -17,8 +17,8 @@ def contact(request):
             email = EmailMessage(
                 "Walterini: Nuevo mensaje de contacto",  # Asunto
                 "De: {} <{}>\n\nEscribió:\n\n{}".format(name, email, content),  # Cuerpo
-                "no-contestar@inbox.mailtrap.io",  # Origen
-                ["lpillaga@gmail.com"],  # Destiono
+                "no-reply@accounts.google.com",  # Origen
+                ["walterini94@gmail.com"],  # Destiono
                 reply_to=[email]
             )
             try:

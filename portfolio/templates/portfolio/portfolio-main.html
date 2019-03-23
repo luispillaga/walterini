@@ -1,0 +1,15 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Portafolio{% endblock %}
+{% block content %}
+    <section id="colorlib-hero" class="js-fullheight fadeInLeft animated" style="margin-bottom: 0px; background-image: url({% static 'core/images/prueba2.jpg' %});">
+        <div class="middle1">
+            <a class="circle" href="{% url 'projects:photography_list' %}"><h2 class="white">Fotografía</h2></a>
+            <a class="circle" href="{% url 'projects:poem_list' %}"><h2 class="white">Posesía</h2></a>
+            <a class="circle" href="{% url 'projects:drawing_list' %}"><h2 class="white">Dibujo</h2></a>
+        </div>
+        <div class="middle2">
+        </div>
+    </section>
+
+{% endblock %}
