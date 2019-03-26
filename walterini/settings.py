@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+from django.core.files.storage import default_storage
+from google.oauth2 import service_account
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,10 +25,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '7y=6n**(pz@)i^#euc5_)yku0rdlhqvfc(2@ime#=4g#qpig%m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
-    'walterini2.appspot.com',  # must add the app engine (project-id) domain here
+    'walter-blog.appspot.com',  # must add the app engine (project-id) domain here
+    'walterini.com',
     '127.0.0.1',  # for local testing
 ]
 
@@ -95,18 +98,18 @@ DATABASES = {
         # If you are using Cloud SQL for MySQL rather than PostgreSQL, set
         # 'ENGINE': 'django.db.backends.mysql' instead of the following.
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'walterini',
+        'NAME': 'walter',
         'USER': 'walter',
         'PASSWORD': 'postgres',
-        # For MySQL, set 'PORT': '3306' instead of the following. Any Cloud
+        # For MySQL, set  '3306' instead of the following. Any Cloud
         # SQL Proxy instances running locally must also be set to tcp:3306.
         'PORT': '5432',
     }
 }
-# In the flexible environment, you connect to CloudSQL using a unix socket.
+# In the flexible environment, you connect to Cloud'PORT':SQL using a unix socket.
 # Locally, you can use the CloudSQL proxy to proxy a localhost connection
 # to the instance
-DATABASES['default']['HOST'] = '/cloudsql/walterini2:us-central1:walterini2-db'
+DATABASES['default']['HOST'] = '/cloudsql/walter-blog:us-central1:walter-db'
 if os.getenv('GAE_INSTANCE'):
     pass
 else:
@@ -147,21 +150,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_URL = 'https://storage.googleapis.com/walterini-static/static/'
+STATIC_URL = 'https://storage.googleapis.com/walter-static/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Media Config
-MEDIA_URL = 'https://storage.googleapis.com/walterini-media/media/'
-# MEDIA_URL = '/media/'
-MEDIA_ROOT = 'https://storage.googleapis.com/walterini-media/media'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# Google
+# cloud storage
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_BUCKET_NAME = 'walter-media'
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    "walter.json"
+)
 
 # CkEditor
-# CKEDITOR_CONFIGS = {
-#     'default': {
-
-#     }
-# }
 
 CKEDITOR_CONFIGS = {
     'default': {
@@ -238,12 +242,12 @@ CKEDITOR_CONFIGS = {
     }
 }
 
-EMAIL_BACKEND = 'appengine_emailbackend.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'walterini94@gmail.com'
-EMAIL_HOST_PASSWORD = 'Capricce24'
+# EMAIL_BACKEND = 'appengine_emailbackend.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_USE_TLS = True
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'walterini94@gmail.com'
+# EMAIL_HOST_PASSWORD = 'Capricce24'
 
 # Jet Themes
 JET_THEMES = [

@@ -38,7 +38,7 @@ env: flex
 entrypoint: gunicorn -b :$PORT walterini.wsgi
 
 beta_settings:
-  cloud_sql_instances: walterini2:us-central1:walterini2-db
+  cloud_sql_instances: walter-blog:us-central1:walter-db
 
 runtime_config:
   python_version: 3

@@ -3,6 +3,7 @@ from core.models import Profile
 from django.utils.timezone import now
 from ckeditor_uploader.fields import RichTextUploadingField
 
+
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(max_length=100, verbose_name="Nombre")
